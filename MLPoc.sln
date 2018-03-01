@@ -5,6 +5,8 @@ VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.TimeSeriesPublisher", "MLPoc.TimeSeriesPublisher\MLPoc.TimeSeriesPublisher.csproj", "{9AB7B81C-F156-468A-A93D-A620D639AEF5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.TimeSeriesPublisher.Console", "MLPoc.TimeSeriesPublisher.Console\MLPoc.TimeSeriesPublisher.Console.csproj", "{A5278F5C-64AE-426C-AB37-37E1E625EEC2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{9AB7B81C-F156-468A-A93D-A620D639AEF5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9AB7B81C-F156-468A-A93D-A620D639AEF5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9AB7B81C-F156-468A-A93D-A620D639AEF5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A5278F5C-64AE-426C-AB37-37E1E625EEC2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A5278F5C-64AE-426C-AB37-37E1E625EEC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A5278F5C-64AE-426C-AB37-37E1E625EEC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A5278F5C-64AE-426C-AB37-37E1E625EEC2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
