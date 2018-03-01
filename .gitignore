@@ -1,1 +1,8 @@
+
+.vs/**
+.vs/MLPoc/**
+.vs/MLPoc/v15/**
 Data/**
+MLPoc/bin/**
+MLPoc/obj/Debug/**
+MLPoc/obj/**
