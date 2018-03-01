@@ -1,9 +1,0 @@
-C:\Users\alexk\Documents\Projects\Upskill Projects\ML-Production-POC\MLPoc\bin\Debug\netstandard2.0\MLPoc.deps.json
-C:\Users\alexk\Documents\Projects\Upskill Projects\ML-Production-POC\MLPoc\bin\Debug\netstandard2.0\MLPoc.dll
-C:\Users\alexk\Documents\Projects\Upskill Projects\ML-Production-POC\MLPoc\bin\Debug\netstandard2.0\MLPoc.pdb
-C:\Users\alexk\Documents\Projects\Upskill Projects\ML-Production-POC\MLPoc\obj\Debug\netstandard2.0\MLPoc.csprojResolveAssemblyReference.cache
-C:\Users\alexk\Documents\Projects\Upskill Projects\ML-Production-POC\MLPoc\obj\Debug\netstandard2.0\MLPoc.csproj.CoreCompileInputs.cache
-C:\Users\alexk\Documents\Projects\Upskill Projects\ML-Production-POC\MLPoc\obj\Debug\netstandard2.0\MLPoc.AssemblyInfoInputs.cache
-C:\Users\alexk\Documents\Projects\Upskill Projects\ML-Production-POC\MLPoc\obj\Debug\netstandard2.0\MLPoc.AssemblyInfo.cs
-C:\Users\alexk\Documents\Projects\Upskill Projects\ML-Production-POC\MLPoc\obj\Debug\netstandard2.0\MLPoc.dll
-C:\Users\alexk\Documents\Projects\Upskill Projects\ML-Production-POC\MLPoc\obj\Debug\netstandard2.0\MLPoc.pdb

@@ -3,10 +3,5 @@
 .vs/MLPoc/**
 .vs/MLPoc/v15/**
 Data/**
-MLPoc/bin/**
-MLPoc/obj/Debug/**
-MLPoc/obj/**
-MLPoc.TimeSeriesPublisher/bin/**
-MLPoc.TimeSeriesPublisher/obj/Debug/**
-MLPoc.TimeSeriesPublisher/obj/Debug/netstandard2.0/**
-MLPoc.TimeSeriesPublisher/obj/**
+**/bin/**
+**/obj/**
