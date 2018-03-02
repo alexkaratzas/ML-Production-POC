@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.FeatureExtractor.Cons
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.FeatureExtractor", "MLPoc.FeatureExtractor\MLPoc.FeatureExtractor.csproj", "{00A5A27F-0BAD-4345-AD68-E57DC9416752}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Bus", "MLPoc.Bus\MLPoc.Bus.csproj", "{18D0842E-78F5-4D86-A65F-BEE746C42D47}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Bus.Kafka", "MLPoc.Bus.Kafka\MLPoc.Bus.Kafka.csproj", "{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +49,14 @@ Global
 		{00A5A27F-0BAD-4345-AD68-E57DC9416752}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00A5A27F-0BAD-4345-AD68-E57DC9416752}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00A5A27F-0BAD-4345-AD68-E57DC9416752}.Release|Any CPU.Build.0 = Release|Any CPU
+		{18D0842E-78F5-4D86-A65F-BEE746C42D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{18D0842E-78F5-4D86-A65F-BEE746C42D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{18D0842E-78F5-4D86-A65F-BEE746C42D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{18D0842E-78F5-4D86-A65F-BEE746C42D47}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "MLPoc.TimeSeriesPublisher.Console": {
+      "commandName": "Project",
+      "commandLineArgs": "\"C:\\Users\\alexk\\Documents\\Projects\\Upskill Projects\\ML-Production-POC\\Data\\data.csv\""
+    }
+  }
+}
