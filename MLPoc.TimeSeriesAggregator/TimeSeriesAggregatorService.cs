@@ -14,6 +14,8 @@ namespace MLPoc.TimeSeriesAggregator
 
         public async Task Run()
         {
+            System.Console.WriteLine("Starting up Time Series Aggregator...");
+
 
         }
     }
