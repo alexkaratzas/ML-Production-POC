@@ -7,7 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\MLPoc.Bus.Kafka\MLPoc.Bus.Kafka.csproj" />
     <ProjectReference Include="..\MLPoc.Bus\MLPoc.Bus.csproj" />
+    <ProjectReference Include="..\MLPoc.Common\MLPoc.Common.csproj" />
   </ItemGroup>
 
 </Project>

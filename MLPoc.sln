@@ -7,17 +7,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.TimeSeriesPublisher",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.TimeSeriesPublisher.Console", "MLPoc.TimeSeriesPublisher.Console\MLPoc.TimeSeriesPublisher.Console.csproj", "{A5278F5C-64AE-426C-AB37-37E1E625EEC2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.TimeSeriesAggregator", "MLPoc.TimeSeriesAggregator\MLPoc.TimeSeriesAggregator.csproj", "{7A4FAB44-E0D0-41AF-A8AF-167C7665F6C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.TimeSeriesAggregator", "MLPoc.TimeSeriesAggregator\MLPoc.TimeSeriesAggregator.csproj", "{7A4FAB44-E0D0-41AF-A8AF-167C7665F6C6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.TimeSeriesAggregator.Console", "MLPoc.TimeSeriesAggregator.Console\MLPoc.TimeSeriesAggregator.Console.csproj", "{D50A2D57-11C9-4A7F-90E8-4E9E1965FFD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.TimeSeriesAggregator.Console", "MLPoc.TimeSeriesAggregator.Console\MLPoc.TimeSeriesAggregator.Console.csproj", "{D50A2D57-11C9-4A7F-90E8-4E9E1965FFD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.FeatureExtractor.Console", "MLPoc.FeatureExtractor.Console\MLPoc.FeatureExtractor.Console.csproj", "{6DD6128D-77D0-4BDF-9CE3-09FA32CBC02D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.FeatureExtractor.Console", "MLPoc.FeatureExtractor.Console\MLPoc.FeatureExtractor.Console.csproj", "{6DD6128D-77D0-4BDF-9CE3-09FA32CBC02D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.FeatureExtractor", "MLPoc.FeatureExtractor\MLPoc.FeatureExtractor.csproj", "{00A5A27F-0BAD-4345-AD68-E57DC9416752}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.FeatureExtractor", "MLPoc.FeatureExtractor\MLPoc.FeatureExtractor.csproj", "{00A5A27F-0BAD-4345-AD68-E57DC9416752}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Bus", "MLPoc.Bus\MLPoc.Bus.csproj", "{18D0842E-78F5-4D86-A65F-BEE746C42D47}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.Bus", "MLPoc.Bus\MLPoc.Bus.csproj", "{18D0842E-78F5-4D86-A65F-BEE746C42D47}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Bus.Kafka", "MLPoc.Bus.Kafka\MLPoc.Bus.Kafka.csproj", "{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.Bus.Kafka", "MLPoc.Bus.Kafka\MLPoc.Bus.Kafka.csproj", "{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Common", "MLPoc.Common\MLPoc.Common.csproj", "{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -57,6 +59,10 @@ Global
 		{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

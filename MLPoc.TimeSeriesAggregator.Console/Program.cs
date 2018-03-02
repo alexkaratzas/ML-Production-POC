@@ -1,10 +1,17 @@
-﻿namespace MLPoc.TimeSeriesAggregator.Console
+﻿using System.Threading.Tasks;
+using MLPoc.Common;
+
+namespace MLPoc.TimeSeriesAggregator.Console
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task<int> Main(string[] args)
         {
-            System.Console.WriteLine("Hello World!");
+            var configurationProvider = new ConfigurationProvider();
+
+            await new TimeSeriesAggregatorService(configurationProvider).Run();
+
+            return 0;
         }
     }
 }
