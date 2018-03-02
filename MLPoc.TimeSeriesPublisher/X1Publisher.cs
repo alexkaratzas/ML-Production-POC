@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using MLPoc.Bus.Messages;
 using MLPoc.Bus.Publishers;
 
 namespace MLPoc.TimeSeriesPublisher
