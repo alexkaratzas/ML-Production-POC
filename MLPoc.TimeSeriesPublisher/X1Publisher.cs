@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using MLPoc.Bus;
-using Newtonsoft.Json;
+using MLPoc.Bus.Publishers;
 
 namespace MLPoc.TimeSeriesPublisher
 {
@@ -29,9 +28,7 @@ namespace MLPoc.TimeSeriesPublisher
                 X1 = x1
             };
 
-            var payload = JsonConvert.SerializeObject(message);
-
-            await _messagePublisher.Publish(_topic, payload);
+            await _messagePublisher.Publish(_topic, message);
         }
     }
 }

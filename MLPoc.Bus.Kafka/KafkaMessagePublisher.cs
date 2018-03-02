@@ -4,6 +4,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
+using MLPoc.Bus.Publishers;
+using Newtonsoft.Json;
 
 namespace MLPoc.Bus.Kafka
 {
@@ -18,13 +20,15 @@ namespace MLPoc.Bus.Kafka
             _producer = new Producer<Null, string>(config, null, new StringSerializer(Encoding.UTF8));
         }
 
-        public async Task Publish(string topic, string message)
+        public async Task Publish<T>(string topic, T message)
         {
-                var deliveryReport = _producer.ProduceAsync(topic, null, message);
+            var payload = JsonConvert.SerializeObject(message);
 
-                var result = await deliveryReport;
+            var deliveryReport = _producer.ProduceAsync(topic, null, payload);
 
-                Console.WriteLine($"Topic: {topic} Partition: {result.Partition}, Offset: {result.Offset}");
+            var result = await deliveryReport;
+
+            Console.WriteLine($"Topic: {topic} Partition: {result.Partition}, Offset: {result.Offset}");
         }
 
         public void Dispose()

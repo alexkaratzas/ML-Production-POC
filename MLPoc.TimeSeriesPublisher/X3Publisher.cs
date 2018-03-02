@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using MLPoc.Bus;
+using MLPoc.Bus.Publishers;
 using Newtonsoft.Json;
 
 namespace MLPoc.TimeSeriesPublisher
