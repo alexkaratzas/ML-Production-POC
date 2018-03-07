@@ -1,4 +1,5 @@
-﻿using MLPoc.Common;
+﻿using MLPoc.Bus.Kafka;
+using MLPoc.Common;
 
 namespace MLPoc.TimeSeriesAggregator.Console
 {
@@ -6,7 +7,8 @@ namespace MLPoc.TimeSeriesAggregator.Console
     {
         public static void Main(string[] args)
         {
-            RunLongRunning(new TimeSeriesAggregatorService(GetConfigurationProvider()));
+            var configurationProvider = GetConfigurationProvider();
+            RunLongRunning(new TimeSeriesAggregatorService(configurationProvider, new KafkaMessageConsumer(configurationProvider)));
         }
     }
 }

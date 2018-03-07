@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
@@ -10,9 +9,6 @@ namespace MLPoc.Bus.Kafka
 {
     public interface IMessageConsumer : IDisposable
     {
-        void Subscribe(IEnumerable<string> topics);
-        void Unsubscribe(IEnumerable<string> topics);
-        void UnsubscribeAll();
         event MessageReceivedEventHandler MessageReceived;
     }
 
@@ -21,15 +17,12 @@ namespace MLPoc.Bus.Kafka
     public class KafkaMessageConsumer : IMessageConsumer
     {
         private readonly Consumer<Null, string> _consumer;
-        private readonly HashSet<string> _topics;
 
         public event MessageReceivedEventHandler MessageReceived;
 
-        public KafkaMessageConsumer(string broker)
+        public KafkaMessageConsumer(IConfigurationProvider configurationProvider)
         {
-            _topics = new HashSet<string>();
-
-            _consumer = new Consumer<Null, string>(ConstructConfig(broker, true), null,
+            _consumer = new Consumer<Null, string>(ConstructConfig(configurationProvider.KafkaBroker, true), null,
                 new StringDeserializer(Encoding.UTF8));
 
             _consumer.OnMessage += OnConsumerOnOnMessage;
@@ -49,46 +42,10 @@ namespace MLPoc.Bus.Kafka
             _consumer.OnPartitionsRevoked += OnConsumerOnOnPartitionsRevoked;
 
             _consumer.OnStatistics += OnConsumerOnOnStatistics;
+
+            _consumer.Subscribe(new []{configurationProvider.X1TopicName, configurationProvider.X2TopicName, configurationProvider.X3TopicName, configurationProvider.X4TopicName, configurationProvider.X5TopicName, configurationProvider.YTopicName });
         }
         
-        public void Subscribe(IEnumerable<string> topics)
-        {
-            foreach (var topic in topics)
-            {
-                _topics.Add(topic);
-            }
-
-            _consumer.Subscribe(_topics);
-
-            LogManager.Instance.Info($"Subscribed to: [{string.Join(", ", _consumer.Subscription)}]");
-        }
-
-        public void Unsubscribe(IEnumerable<string> topics)
-        {
-            if (topics.All(t => !_topics.Contains(t)))
-            {
-                return;
-            }
-
-            foreach (var topic in topics)
-            {
-                _topics.Remove(topic);
-            }
-
-            _consumer.Subscribe(_topics);
-
-            LogManager.Instance.Info($"Unsubscribed from  [{string.Join(", ", topics)}]. Now subscribed to: [{string.Join(", ", _consumer.Subscription)}]");
-        }
-
-        public void UnsubscribeAll()
-        {
-            _topics.Clear();
-
-            _consumer.Unsubscribe();
-
-            LogManager.Instance.Info($"Unsubscribed from all topics. Now subscribed to: [{string.Join(", ", _consumer.Subscription)}]");
-        }
-
         private static Dictionary<string, object> ConstructConfig(string brokerList, bool enableAutoCommit)
         {
             return new Dictionary<string, object>
