@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Confluent.Kafka;
@@ -25,9 +24,7 @@ namespace MLPoc.Bus.Kafka
         {
             var payload = JsonConvert.SerializeObject(message);
 
-            var deliveryReport = _producer.ProduceAsync(topic, null, payload);
-
-            var result = await deliveryReport;
+            var result = await _producer.ProduceAsync(topic, null, payload);
 
             LogManager.Instance.Info($"Topic: {topic} Partition: {result.Partition}, Offset: {result.Offset}");
         }
