@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
 using MLPoc.Bus.Publishers;
+using MLPoc.Common;
 using Newtonsoft.Json;
 
 namespace MLPoc.Bus.Kafka
@@ -28,7 +29,7 @@ namespace MLPoc.Bus.Kafka
 
             var result = await deliveryReport;
 
-            Console.WriteLine($"Topic: {topic} Partition: {result.Partition}, Offset: {result.Offset}");
+            LogManager.Instance.Info($"Topic: {topic} Partition: {result.Partition}, Offset: {result.Offset}");
         }
 
         public void Dispose()

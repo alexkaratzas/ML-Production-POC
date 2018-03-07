@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MLPoc.Bus\MLPoc.Bus.csproj" />
+    <ProjectReference Include="..\MLPoc.Common\MLPoc.Common.csproj" />
   </ItemGroup>
 
 </Project>

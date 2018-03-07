@@ -1,17 +1,12 @@
-﻿using System.Threading.Tasks;
-using MLPoc.Common;
+﻿using MLPoc.Common;
 
 namespace MLPoc.TimeSeriesAggregator.Console
 {
-    public class Program
+    public class Program : ProgramBase
     {
-        public static async Task<int> Main(string[] args)
+        public static void Main(string[] args)
         {
-            var configurationProvider = new ConfigurationProvider();
-
-            await new TimeSeriesAggregatorService(configurationProvider).Run();
-
-            return 0;
+            RunLongRunning(new TimeSeriesAggregatorService(GetConfigurationProvider()));
         }
     }
 }

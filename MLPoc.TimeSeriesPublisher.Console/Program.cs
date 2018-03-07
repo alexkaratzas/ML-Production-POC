@@ -1,16 +1,21 @@
 ﻿
 using System.Threading.Tasks;
-using ConfigurationProvider = MLPoc.Common.ConfigurationProvider;
+using MLPoc.Common;
 
 namespace MLPoc.TimeSeriesPublisher.Console
 {
-    public class Program
+    public class Program : ProgramBase
     {
         public static async Task<int> Main(string[] args)
         {
-            var configurationProvider = new ConfigurationProvider();
+            var configurationProvider = GetConfigurationProvider();
 
-            await new TimeSeriesPublisherService(configurationProvider).Run(args[0]);
+            LogManager.SetLogger(new ConsoleLogger());
+
+            using (var service = new TimeSeriesPublisherService(configurationProvider))
+            {
+                await service.Run(args[0]);
+            }
 
             return 0;
         }

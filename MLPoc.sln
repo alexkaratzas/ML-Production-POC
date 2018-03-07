@@ -11,10 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.TimeSeriesAggregator"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.TimeSeriesAggregator.Console", "MLPoc.TimeSeriesAggregator.Console\MLPoc.TimeSeriesAggregator.Console.csproj", "{D50A2D57-11C9-4A7F-90E8-4E9E1965FFD5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.FeatureExtractor.Console", "MLPoc.FeatureExtractor.Console\MLPoc.FeatureExtractor.Console.csproj", "{6DD6128D-77D0-4BDF-9CE3-09FA32CBC02D}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.FeatureExtractor", "MLPoc.FeatureExtractor\MLPoc.FeatureExtractor.csproj", "{00A5A27F-0BAD-4345-AD68-E57DC9416752}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.Bus", "MLPoc.Bus\MLPoc.Bus.csproj", "{18D0842E-78F5-4D86-A65F-BEE746C42D47}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.Bus.Kafka", "MLPoc.Bus.Kafka\MLPoc.Bus.Kafka.csproj", "{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}"
@@ -43,14 +39,6 @@ Global
 		{D50A2D57-11C9-4A7F-90E8-4E9E1965FFD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D50A2D57-11C9-4A7F-90E8-4E9E1965FFD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D50A2D57-11C9-4A7F-90E8-4E9E1965FFD5}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6DD6128D-77D0-4BDF-9CE3-09FA32CBC02D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6DD6128D-77D0-4BDF-9CE3-09FA32CBC02D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6DD6128D-77D0-4BDF-9CE3-09FA32CBC02D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6DD6128D-77D0-4BDF-9CE3-09FA32CBC02D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{00A5A27F-0BAD-4345-AD68-E57DC9416752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00A5A27F-0BAD-4345-AD68-E57DC9416752}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00A5A27F-0BAD-4345-AD68-E57DC9416752}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00A5A27F-0BAD-4345-AD68-E57DC9416752}.Release|Any CPU.Build.0 = Release|Any CPU
 		{18D0842E-78F5-4D86-A65F-BEE746C42D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{18D0842E-78F5-4D86-A65F-BEE746C42D47}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{18D0842E-78F5-4D86-A65F-BEE746C42D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
