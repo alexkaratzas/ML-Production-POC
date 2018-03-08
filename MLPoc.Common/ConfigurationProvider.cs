@@ -12,6 +12,7 @@ namespace MLPoc.Common
         string X4TopicName { get; }
         string X5TopicName { get; }
         string YTopicName { get; }
+        string ConsumerGroup { get; }
     }
 
     public class ConfigurationProvider : IConfigurationProvider
@@ -32,5 +33,6 @@ namespace MLPoc.Common
         public string X4TopicName => _configurationRoot["X4TopicName"];
         public string X5TopicName => _configurationRoot["X5TopicName"];
         public string YTopicName => _configurationRoot ["YTopicName"];
-}
+        public string ConsumerGroup => _configurationRoot["ConsumerGroup"];
+    }
 }

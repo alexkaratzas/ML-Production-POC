@@ -3,6 +3,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
+using MLPoc.Bus.Consumers;
 using MLPoc.Common;
 
 namespace MLPoc.Bus.Kafka
@@ -168,10 +169,5 @@ namespace MLPoc.Bus.Kafka
 
             _consumer?.Dispose();
         }
-    }
-
-    public class MessageReceivedEventArgs
-    {
-        public string Topic { get; set; }
     }
 }

@@ -13,8 +13,6 @@ namespace MLPoc.Common
 
         protected static void RunLongRunning(IService service)
         {
-            LogManager.SetLogger(new ConsoleLogger());
-
             System.Console.CancelKeyPress += (sender, eArgs) => {
                 QuitEvent.Set();
                 eArgs.Cancel = true;
