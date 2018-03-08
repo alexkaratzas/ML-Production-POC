@@ -4,7 +4,6 @@ namespace MLPoc.Common
 {
     public abstract class ProgramBase
     {
-        protected static readonly ConfigurationProvider ConfigurationProvider;
         private static readonly ManualResetEvent QuitEvent = new ManualResetEvent(false);
 
         protected static ConfigurationProvider GetConfigurationProvider(string jsonFileName = "appsettings.json")

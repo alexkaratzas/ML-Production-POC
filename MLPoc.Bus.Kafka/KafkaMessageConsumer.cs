@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 using Confluent.Kafka;
 using Confluent.Kafka.Serialization;
 using MLPoc.Common;
 
 namespace MLPoc.Bus.Kafka
 {
-    public interface IMessageConsumer : IDisposable
-    {
-        event MessageReceivedEventHandler MessageReceived;
-    }
-
-    public delegate void MessageReceivedEventHandler(object sender, Message<Null, string> msg);
-
+    //TODO: need to split out topic consumption to different consumers so that they are being consumed in parallel
     public class KafkaMessageConsumer : IMessageConsumer
     {
+        private readonly IEnumerable<string> _topics;
         private readonly Consumer<Null, string> _consumer;
 
         public event MessageReceivedEventHandler MessageReceived;
+        private const int PollIntervalMs = 100;
+        private bool _cancelled;
+        private bool _started;
 
-        public KafkaMessageConsumer(IConfigurationProvider configurationProvider)
+        public KafkaMessageConsumer(string broker, IEnumerable<string> topics)
         {
-            _consumer = new Consumer<Null, string>(ConstructConfig(configurationProvider.KafkaBroker, true), null,
+            _topics = topics;
+            _consumer = new Consumer<Null, string>(ConstructConfig(broker, true), null,
                 new StringDeserializer(Encoding.UTF8));
 
             _consumer.OnMessage += OnConsumerOnOnMessage;
@@ -43,7 +42,35 @@ namespace MLPoc.Bus.Kafka
 
             _consumer.OnStatistics += OnConsumerOnOnStatistics;
 
-            _consumer.Subscribe(new []{configurationProvider.X1TopicName, configurationProvider.X2TopicName, configurationProvider.X3TopicName, configurationProvider.X4TopicName, configurationProvider.X5TopicName, configurationProvider.YTopicName });
+        }
+
+        private Task _mainTask;
+
+        public Task Start()
+        {
+            if (_started)
+            {
+                return Task.FromResult(0);
+            }
+
+            _consumer.Subscribe(_topics);
+
+            _started = true;
+
+            return _mainTask = Task.Run(() =>
+            {
+                while (!_cancelled)
+                {
+                    _consumer.Poll(PollIntervalMs);
+                }
+            });
+        }
+
+        public Task Stop()
+        {
+            _cancelled = true;
+
+            return _mainTask;
         }
         
         private static Dictionary<string, object> ConstructConfig(string brokerList, bool enableAutoCommit)
@@ -113,15 +140,19 @@ namespace MLPoc.Bus.Kafka
 
         private void OnConsumerOnOnMessage(object _, Message<Null, string> msg)
         {
-            LogManager.Instance.Info($"Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
+            LogManager.Instance.Info($"Message received for Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
 
-            //TODO: offload to different thread for greater parallelism
-            MessageReceived?.Invoke(this, msg);
+            MessageReceived?.Invoke(this, new Messages.Message
+            {
+                Topic = msg.Topic,
+                Payload = msg.Value
+            });
         }
-
 
         public void Dispose()
         {
+            Stop().Wait();
+
             _consumer.OnMessage -= OnConsumerOnOnMessage;
             _consumer.OnPartitionEOF -= OnConsumerOnOnPartitionEof;
             _consumer.OnError -= OnConsumerOnOnError;

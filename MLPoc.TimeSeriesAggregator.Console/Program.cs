@@ -8,7 +8,18 @@ namespace MLPoc.TimeSeriesAggregator.Console
         public static void Main(string[] args)
         {
             var configurationProvider = GetConfigurationProvider();
-            RunLongRunning(new TimeSeriesAggregatorService(configurationProvider, new KafkaMessageConsumer(configurationProvider)));
+            var consumer = new KafkaMessageConsumer(configurationProvider.KafkaBroker,
+                new[]
+                {
+                    configurationProvider.X1TopicName,
+                    configurationProvider.X2TopicName,
+                    configurationProvider.X3TopicName,
+                    configurationProvider.X4TopicName,
+                    configurationProvider.X5TopicName,
+                    configurationProvider.YTopicName
+                });
+
+            RunLongRunning(new TimeSeriesAggregatorService(consumer));
         }
     }
 }

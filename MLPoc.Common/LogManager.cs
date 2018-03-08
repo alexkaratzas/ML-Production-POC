@@ -33,12 +33,12 @@ namespace MLPoc.Common
     {
         public void Info(string message)
         {
-            WriteToConsole(message);
+            WriteToConsole($"INFO: {message}");
         }
 
         public void Error(string message, Exception ex = null)
         {
-            WriteToConsole(message);
+            WriteToConsole($"ERROR: {message}. {ex}");
         }
 
         private static void WriteToConsole(string message)
