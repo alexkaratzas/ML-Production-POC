@@ -1,10 +1,7 @@
-﻿using System;
-
-namespace MLPoc.Bus.Messages
+﻿namespace MLPoc.Bus.Messages
 {
-    public class YMessage
+    public class YMessage : TimeSeriesFeature
     {
-        public DateTime DateTime { get; set; }
         public decimal? Y { get; set; }
     }
 }

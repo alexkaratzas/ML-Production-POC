@@ -17,9 +17,12 @@ namespace MLPoc.TimeSeriesAggregator.Console
                     configurationProvider.X4TopicName,
                     configurationProvider.X5TopicName,
                     configurationProvider.YTopicName
-                });
+                }, "TimeSeriesConsumerGroup2");
+            var repository = new DataPointInMemoryRepository();
 
-            RunLongRunning(new TimeSeriesAggregatorService(consumer));
+            RunLongRunning(new TimeSeriesAggregatorService(consumer, configurationProvider, repository));
+
+            repository.SaveToCsv("StreamToCsv.csv");
         }
     }
 }

@@ -11,6 +11,7 @@ namespace MLPoc.Bus.Kafka
     public class KafkaMessageConsumer : IMessageConsumer
     {
         private readonly IEnumerable<string> _topics;
+        private readonly string _consumerGroup;
         private readonly Consumer<Null, string> _consumer;
 
         public event MessageReceivedEventHandler MessageReceived;
@@ -18,10 +19,11 @@ namespace MLPoc.Bus.Kafka
         private bool _cancelled;
         private bool _started;
 
-        public KafkaMessageConsumer(string broker, IEnumerable<string> topics)
+        public KafkaMessageConsumer(string broker, IEnumerable<string> topics, string consumerGroup)
         {
             _topics = topics;
-            _consumer = new Consumer<Null, string>(ConstructConfig(broker, true), null,
+            _consumerGroup = consumerGroup;
+            _consumer = new Consumer<Null, string>(ConstructConfig(broker, true, _consumerGroup), null,
                 new StringDeserializer(Encoding.UTF8));
 
             _consumer.OnMessage += OnConsumerOnOnMessage;
@@ -73,11 +75,11 @@ namespace MLPoc.Bus.Kafka
             return _mainTask;
         }
         
-        private static Dictionary<string, object> ConstructConfig(string brokerList, bool enableAutoCommit)
+        private static Dictionary<string, object> ConstructConfig(string brokerList, bool enableAutoCommit, string consumerGroup)
         {
             return new Dictionary<string, object>
             {
-                {"group.id", "advanced-csharp-consumer"},
+                {"group.id", consumerGroup},
                 {"enable.auto.commit", enableAutoCommit},
                 {"auto.commit.interval.ms", 5000},
                 {"statistics.interval.ms", 60000},
