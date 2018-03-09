@@ -1,6 +1,6 @@
 ﻿using MLPoc.Bus.Kafka;
 using MLPoc.Common;
-using MLPoc.Data.Common;
+using MLPoc.Data.MongoDb;
 
 namespace MLPoc.TimeSeriesAggregator.Console
 {
@@ -9,6 +9,8 @@ namespace MLPoc.TimeSeriesAggregator.Console
         public static void Main(string[] args)
         {
             LogManager.SetLogger(new ConsoleLogger());
+
+            MongoConfig.Configure();
 
             var configurationProvider = GetConfigurationProvider();
             var consumerFactory = new KafkaMessageConsumerFactory(configurationProvider);
@@ -20,12 +22,11 @@ namespace MLPoc.TimeSeriesAggregator.Console
             var x5FeatureConsumer = new X5MessageConsumer(configurationProvider, consumerFactory);
             var yFeatureConsumer = new YMessageConsumer(configurationProvider, consumerFactory);
 
-            var repository = new DataPointInMemoryRepository();
+            var database = new MongoDbDatabase(configurationProvider.MongoDbHost, configurationProvider.MongoDbPort, configurationProvider.MongoDbDatabaseName);
+            var repository = new DataPointRepository(database);
 
             RunLongRunning(new TimeSeriesAggregatorService(x1FeatureConsumer, x2FeatureConsumer, x3FeatureConsumer,
                 x4FeatureConsumer, x5FeatureConsumer, yFeatureConsumer, repository));
-
-            repository.SaveToCsv("StreamToCsv.csv");
         }
     }
 }

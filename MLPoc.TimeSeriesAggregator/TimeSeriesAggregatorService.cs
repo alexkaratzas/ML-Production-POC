@@ -63,7 +63,7 @@ namespace MLPoc.TimeSeriesAggregator
 
                 var dataPoint = partialDataPoint.GetDataPoint();
 
-                _dataPointRepository.Add(dataPoint);
+                _dataPointRepository.Add(dataPoint).Wait();
 
                 _partialDataPoints.TryRemove(feature.DateTime, out _);
             }

@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.Common", "MLPoc.Commo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Data.Common", "MLPoc.Data.Common\MLPoc.Data.Common.csproj", "{EAEABA15-2FB2-49BE-9068-88077B44F376}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Data.MongoDb", "MLPoc.Data.MongoDb\MLPoc.Data.MongoDb.csproj", "{F11998B5-C1FD-4F1C-A03F-F825819ADBD3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{EAEABA15-2FB2-49BE-9068-88077B44F376}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EAEABA15-2FB2-49BE-9068-88077B44F376}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EAEABA15-2FB2-49BE-9068-88077B44F376}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F11998B5-C1FD-4F1C-A03F-F825819ADBD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F11998B5-C1FD-4F1C-A03F-F825819ADBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F11998B5-C1FD-4F1C-A03F-F825819ADBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F11998B5-C1FD-4F1C-A03F-F825819ADBD3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

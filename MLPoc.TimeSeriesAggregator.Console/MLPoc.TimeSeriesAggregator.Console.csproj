@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\MLPoc.Common\MLPoc.Common.csproj" />
+    <ProjectReference Include="..\MLPoc.Data.MongoDb\MLPoc.Data.MongoDb.csproj" />
     <ProjectReference Include="..\MLPoc.TimeSeriesAggregator\MLPoc.TimeSeriesAggregator.csproj" />
   </ItemGroup>
 

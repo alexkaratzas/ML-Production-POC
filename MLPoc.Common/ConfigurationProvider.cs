@@ -13,6 +13,9 @@ namespace MLPoc.Common
         string X5TopicName { get; }
         string YTopicName { get; }
         string ConsumerGroup { get; }
+        string MongoDbHost { get; }
+        int MongoDbPort { get; }
+        string MongoDbDatabaseName { get; }
     }
 
     public class ConfigurationProvider : IConfigurationProvider
@@ -34,5 +37,8 @@ namespace MLPoc.Common
         public string X5TopicName => _configurationRoot["X5TopicName"];
         public string YTopicName => _configurationRoot ["YTopicName"];
         public string ConsumerGroup => _configurationRoot["ConsumerGroup"];
+        public string MongoDbHost=> _configurationRoot.GetSection("MongoDbSettings")["Host"];
+        public int MongoDbPort=> int.Parse(_configurationRoot.GetSection("MongoDbSettings")["Port"]);
+        public string MongoDbDatabaseName=> _configurationRoot.GetSection("MongoDbSettings")["DatabaseName"];
     }
 }

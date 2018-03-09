@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Threading.Tasks;
 using MLPoc.Common.Domain;
 
 namespace MLPoc.Data.Common
@@ -13,14 +15,16 @@ namespace MLPoc.Data.Common
             _dataPoints = new List<DataPoint>();
         }
 
-        public void Add(DataPoint dataPoint)
+        public Task Add(DataPoint dataPoint)
         {
             _dataPoints.Add(dataPoint);
+
+            return Task.CompletedTask;
         }
 
-        public IEnumerable<DataPoint> GetAll()
+        public Task<IEnumerable<DataPoint>> GetAll()
         {
-            return _dataPoints;
+            return Task.FromResult(_dataPoints.AsEnumerable());
         }
 
         public void SaveToCsv(string fileName)
