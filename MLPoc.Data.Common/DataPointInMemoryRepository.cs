@@ -1,14 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using MLPoc.Common.Domain;
 
-namespace MLPoc.TimeSeriesAggregator
+namespace MLPoc.Data.Common
 {
-    public interface IDataPointRepository
-    {
-        void Add(DataPoint dataPoint);
-        IEnumerable<DataPoint> GetAll();
-    }
-
     public class DataPointInMemoryRepository : IDataPointRepository
     {
         private readonly List<DataPoint> _dataPoints;

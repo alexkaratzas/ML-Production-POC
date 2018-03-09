@@ -5,9 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MLPoc.Bus.Kafka\MLPoc.Bus.Kafka.csproj" />
     <ProjectReference Include="..\MLPoc.Common\MLPoc.Common.csproj" />
-    <ProjectReference Include="..\MLPoc.Data.Common\MLPoc.Data.Common.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,5 +1,6 @@
 ﻿using System;
 using MLPoc.Bus.Messages;
+using MLPoc.Common.Domain;
 
 namespace MLPoc.TimeSeriesAggregator
 {

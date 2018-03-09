@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.Bus", "MLPoc.Bus\MLPo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.Bus.Kafka", "MLPoc.Bus.Kafka\MLPoc.Bus.Kafka.csproj", "{EEE40DC0-B358-4DC0-84AD-F7D147D5459B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Common", "MLPoc.Common\MLPoc.Common.csproj", "{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MLPoc.Common", "MLPoc.Common\MLPoc.Common.csproj", "{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Data.Common", "MLPoc.Data.Common\MLPoc.Data.Common.csproj", "{EAEABA15-2FB2-49BE-9068-88077B44F376}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CEA3598F-2B4C-4B4E-A3CB-26B78011E9FA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EAEABA15-2FB2-49BE-9068-88077B44F376}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EAEABA15-2FB2-49BE-9068-88077B44F376}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EAEABA15-2FB2-49BE-9068-88077B44F376}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EAEABA15-2FB2-49BE-9068-88077B44F376}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

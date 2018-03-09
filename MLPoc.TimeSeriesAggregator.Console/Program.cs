@@ -1,5 +1,6 @@
 ﻿using MLPoc.Bus.Kafka;
 using MLPoc.Common;
+using MLPoc.Data.Common;
 
 namespace MLPoc.TimeSeriesAggregator.Console
 {

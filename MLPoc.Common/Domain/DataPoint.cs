@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MLPoc.TimeSeriesAggregator
+namespace MLPoc.Common.Domain
 {
     public class DataPoint
     {
