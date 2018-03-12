@@ -31,13 +31,16 @@ namespace MLPoc.TimeSeriesPublisher
             _yPublisher = yPublisher;
         }
 
-        public async Task ConvertCsvToStream(string path)
+        public async Task ConvertCsvToStream(string path, int? startIndex, int? endIndex)
         {
-            var content = ReadFileContent(path).ToArray();
+            var content = ReadFileContent(path).ToList();
+
+            startIndex = startIndex ?? 0;
+            endIndex = endIndex ?? content.Count - 2;
 
             var tasks = new List<Task>();
 
-            foreach (var dataPoint in content.Skip(1))
+            foreach (var dataPoint in content.GetRange(1 + startIndex.Value, endIndex.Value))
             {
                 var date = DateTime.Parse(dataPoint[0]);
                 var x1 = TryParseNullableDecimal(dataPoint[1]);

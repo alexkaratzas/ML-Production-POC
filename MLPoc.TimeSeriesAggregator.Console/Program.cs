@@ -10,8 +10,6 @@ namespace MLPoc.TimeSeriesAggregator.Console
         {
             LogManager.SetLogger(new ConsoleLogger());
 
-            MongoConfig.Configure();
-
             var configurationProvider = GetConfigurationProvider();
             var consumerFactory = new KafkaMessageConsumerFactory(configurationProvider);
 
