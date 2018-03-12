@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Data.Common", "MLPoc.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MLPoc.Data.MongoDb", "MLPoc.Data.MongoDb\MLPoc.Data.MongoDb.csproj", "{F11998B5-C1FD-4F1C-A03F-F825819ADBD3}"
 EndProject
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "MLPoc.PredictionModel.Console", "MLPoc.PredictionModel.Console\MLPoc.PredictionModel.Console.pyproj", "{593ED085-7C9B-4709-81DC-EA3B96A770A4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,8 @@ Global
 		{F11998B5-C1FD-4F1C-A03F-F825819ADBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F11998B5-C1FD-4F1C-A03F-F825819ADBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F11998B5-C1FD-4F1C-A03F-F825819ADBD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{593ED085-7C9B-4709-81DC-EA3B96A770A4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{593ED085-7C9B-4709-81DC-EA3B96A770A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
