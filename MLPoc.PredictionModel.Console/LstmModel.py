@@ -1,7 +1,5 @@
 from ml_libs import series_to_supervised
 from sklearn.preprocessing import MinMaxScaler
-from math import sqrt
-from numpy import concatenate
 #from matplotlib import pyplot
 from pandas import read_csv
 from pandas import DataFrame
@@ -12,6 +10,8 @@ from sklearn.metrics import mean_squared_error, r2_score
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.layers import LSTM
+import math
+import numpy as np
 
 class LstmModel(object):
     """description of class"""
@@ -19,16 +19,21 @@ class LstmModel(object):
     def predict(self, record):
         pass
 
-    def train(self, list, column_names):
-        df = DataFrame.from_records(list, columns=column_names)
+    def train(self, df):
+        df = self.__prepare_dataframe(df)
 
-        test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model, scaler = __train_and_score_lstm_with_T0_data(df)
+        test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model, scaler = self.__train_and_score_lstm_with_T0_data(df, log_verbose=True)
+        
         self.model = model
         self.scaler = scaler
         self.r2 = r2
         self.rmse = rmse
 
-    def __train_and_score_lstm_with_T0_data(data_frame, train_perc = 0.7, look_ahead=0, epochs = 50, optimizer='adam', pred_future=1, log_verbose=True):
+    def __prepare_dataframe(self, df):
+        return df.loc[:, df.columns != 'DateTime']
+
+    def __train_and_score_lstm_with_T0_data(self, data_frame, train_perc = 0.7, look_ahead=0, epochs = 50, optimizer='adam', pred_future=1, log_verbose=True, plot_charts = False):
+        
         # load dataset
         dataset = data_frame.copy()
         
@@ -140,27 +145,29 @@ class LstmModel(object):
         if log_verbose == False:
             model_verbosity = 0
         history = model.fit(train_X, train_y, epochs=epochs, batch_size=72, validation_data=(test_X, test_y), verbose=model_verbosity, shuffle=False)
-        # plot history
-        # pyplot.plot(history.history['loss'], label='train')
-        # pyplot.plot(history.history['val_loss'], label='test')
-        # pyplot.legend()
-        # pyplot.show()
+
+        if plot_charts:
+            #plot history
+            pyplot.plot(history.history['loss'], label='train')
+            pyplot.plot(history.history['val_loss'], label='test')
+            pyplot.legend()
+            pyplot.show()
         
         # make a prediction
         y_pred = model.predict(test_X)
         
         test_X = test_X.reshape((test_X.shape[0], n_hours*n_features))
         # invert scaling for forecast
-        inv_yhat = concatenate((y_pred, test_X[:, -(n_features-1):]), axis=1)
+        inv_yhat = np.concatenate((y_pred, test_X[:, -(n_features-1):]), axis=1)
         inv_yhat = scaler.inverse_transform(inv_yhat)
         inv_yhat = inv_yhat[:,0]
         # invert scaling for actual
         test_y = test_y.reshape((len(test_y), 1))
-        inv_y = concatenate((test_y, test_X[:, -(n_features-1):]), axis=1)
+        inv_y = np.concatenate((test_y, test_X[:, -(n_features-1):]), axis=1)
         inv_y = scaler.inverse_transform(inv_y)
         inv_y = inv_y[:,0]
         # calculate RMSE
-        rmse = sqrt(mean_squared_error(inv_y, inv_yhat))
+        rmse = math.sqrt(mean_squared_error(inv_y, inv_yhat))
         print('Test RMSE: %.3f' % rmse)
     
         r2 = r2_score(inv_y, inv_yhat)

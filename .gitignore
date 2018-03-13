@@ -5,3 +5,5 @@
 Data/**
 **/bin/**
 **/obj/**
+**/*.pyc
+MLPoc.PredictionModel.Console/Database/__pycache__/**

@@ -3,6 +3,8 @@ from DataPointMongoRepository import DataPointMongoRepository
 import json
 from collections import namedtuple
 from LstmModel import LstmModel
+import pandas as pd
+from FeatureUtils import convert_json_to_dataframe
 
 def main():
     print('Starting up Model Prediction Service...')
@@ -12,12 +14,14 @@ def main():
     dataPointRepo = DataPointMongoRepository(db)
     
     dataPoints = dataPointRepo.find()
-    
-    print(len(dataPoints))
+
+    df = convert_json_to_dataframe(dataPoints)
+
+    print(df.count)
 
     model = LstmModel()
 
-    model.train(dataPoints)
+    model.train(df)
 
 
 def get_config():
