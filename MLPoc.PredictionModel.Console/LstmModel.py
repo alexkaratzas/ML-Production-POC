@@ -16,23 +16,109 @@ import numpy as np
 class LstmModel(object):
     """description of class"""
 
-    def predict(self, record):
-        pass
+    def __init__(self, past_window_size = 0, epochs = 50, train_perc = 0.7, log_verbose=False, batch_size = 72):
+        self.__past_window_size = past_window_size
+        self.__epochs = epochs
+        self.__train_perc = train_perc
+        self.__log_verbose = log_verbose
+        self.__batch_size = batch_size
+
+    def predict(self, data_point_df):
+        log_verbose = self.__log_verbose
+
+        dataset = self.__last_data_points.copy()
+        dataset = dataset.append(data_point_df)
+
+        dataset['YTminus1'] = dataset['y'].shift(1)
+        dataset = dataset.dropna(axis=0, how='any')
+        
+        # if pred_future == 1:
+        values = dataset.iloc[:, dataset.columns != 'y'].values
+        #     yvalues = dataset[['y']].values
+        # else:
+        #     values = dataset.iloc[:1-pred_future, dataset.columns != 'y'].values
+        #     yvalues = dataset[['y']].shift(1-pred_future).dropna(axis=0, how='any').values
+        
+        if log_verbose == True:
+            print('Dataframe values:')
+            print('Shape of values: ', values.shape)
+            print(values[0:5,:])
+            print('Shape of yvalues: ', yvalues.shape)
+            print(yvalues[0:5,:])    
+        
+        # integer encode direction
+        # ensure all data is float
+        values = values.astype('float32')
+        # normalize features
+        self.__feature_scaler = self__get_new_scaler()
+        scaled = self.__feature_scaler.transform(values)
+        
+        # self.__y_scaler = __get_new_scaler()
+        # yscaled= self.__y_scaler.fit_transform(yvalues)
+        
+        if log_verbose == True:
+            print('Scaled values:')
+            print(scaled[0:5,:])
+        
+        # specify the number of lag hours
+        n_hours = look_ahead + 1;
+        n_features = len(dataset.iloc[:, dataset.columns != 'y'].columns);
+        
+        # frame as supervised learning
+        reframed = series_to_supervised(scaled, look_ahead, 1)
+        
+        # implicit shift so that the y from future_pred is used as target after series_to_supervised folds past window into each row
+        # yscaled = yscaled[len(yscaled) - len(reframed):]
+        
+        if log_verbose == True:
+            print(reframed.shape)
+            print(reframed.head())
+
+        values = reframed.values
+        
+        n_obs = (n_hours + 1) * n_features
+
+        X = values[:, :n_obs]
+
+        if log_verbose == True:
+          print(f"Shape of prediction array before reshaping {X.shape} with {len(X)} rows")
+        
+        # reshape input to be 3D [samples, timesteps, features]
+        X = X.reshape((X.shape[0], n_hours, n_features))
+        
+        if log_verbose == True:
+          print(f"Shape of prediction array after reshaping {X.shape} with {len(X)} rows")
+
+        y_pred = self.model.predict(test_X)
+        
+        X = X.reshape((test_X.shape[0], n_hours*n_features))
+        # invert scaling for forecast
+        inv_yhat = np.concatenate((y_pred, X[:, -(n_features-1):]), axis=1)
+        inv_yhat = self.__y_scaler.inverse_transform(inv_yhat)
+        inv_yhat = inv_yhat[:,0]
+        
+        return inv_yhat;
+
 
     def train(self, df):
         df = self.__prepare_dataframe(df)
 
-        test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model, scaler = self.__train_and_score_lstm_with_T0_data(df, log_verbose=True)
+        test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model, feature_scaler, y_scaler = self.__train_and_score_lstm_with_T0_data(df, batch_size=self.__batch_size, log_verbose=self.__log_verbose)
         
         self.model = model
-        self.scaler = scaler
         self.r2 = r2
         self.rmse = rmse
+        self.__feature_scaler = feature_scaler
+        self.__y_scaler = y_scaler
+        self.__last_data_points = df.loc[-(self.__past_window_size + 1):, :]
 
     def __prepare_dataframe(self, df):
         return df.loc[:, df.columns != 'DateTime']
 
-    def __train_and_score_lstm_with_T0_data(self, data_frame, train_perc = 0.7, look_ahead=0, epochs = 50, optimizer='adam', pred_future=1, log_verbose=True, plot_charts = False):
+    def __get_new_scaler(self):
+        return MinMaxScaler(feature_range=(0, 1));
+
+    def __train_and_score_lstm_with_T0_data(self, data_frame, batch_size, train_perc = 0.7, look_ahead=0, epochs = 50, optimizer='adam', pred_future=1, log_verbose=True, plot_charts = False):
         
         # load dataset
         dataset = data_frame.copy()
@@ -55,15 +141,14 @@ class LstmModel(object):
             print(yvalues[0:5,:])    
         
         # integer encode direction
-        #encoder = LabelEncoder()
-        #values[:,4] = encoder.fit_transform(values[:,4])
         # ensure all data is float
         values = values.astype('float32')
         # normalize features
-        scaler = MinMaxScaler(feature_range=(0, 1))
-        scaled = scaler.fit_transform(values)
+        feature_scaler = MinMaxScaler(feature_range=(0, 1))
+        scaled = self.__feature_scaler.fit_transform(values)
         
-        yscaled= scaler.fit_transform(yvalues)
+        y_scaler = MinMaxScaler(feature_range=(0, 1))
+        yscaled= self.__y_scaler.fit_transform(yvalues)
         
         if log_verbose == True:
             print('Scaled values:')
@@ -82,7 +167,7 @@ class LstmModel(object):
         if log_verbose == True:
             print(reframed.shape)
             print(reframed.head())
-        
+
         # split into train and test sets
         values = reframed.values
         train_sample_perc = train_perc;
@@ -144,8 +229,8 @@ class LstmModel(object):
         model_verbosity = 2
         if log_verbose == False:
             model_verbosity = 0
-        history = model.fit(train_X, train_y, epochs=epochs, batch_size=72, validation_data=(test_X, test_y), verbose=model_verbosity, shuffle=False)
-
+        history = model.fit(train_X, train_y, epochs=epochs, batch_size=batch_size, validation_data=(test_X, test_y), verbose=model_verbosity, shuffle=False)
+                
         if plot_charts:
             #plot history
             pyplot.plot(history.history['loss'], label='train')
@@ -159,12 +244,12 @@ class LstmModel(object):
         test_X = test_X.reshape((test_X.shape[0], n_hours*n_features))
         # invert scaling for forecast
         inv_yhat = np.concatenate((y_pred, test_X[:, -(n_features-1):]), axis=1)
-        inv_yhat = scaler.inverse_transform(inv_yhat)
+        inv_yhat = self.__y_scaler.inverse_transform(inv_yhat)
         inv_yhat = inv_yhat[:,0]
         # invert scaling for actual
         test_y = test_y.reshape((len(test_y), 1))
         inv_y = np.concatenate((test_y, test_X[:, -(n_features-1):]), axis=1)
-        inv_y = scaler.inverse_transform(inv_y)
+        inv_y = self.__y_scaler.inverse_transform(inv_y)
         inv_y = inv_y[:,0]
         # calculate RMSE
         rmse = math.sqrt(mean_squared_error(inv_y, inv_yhat))
@@ -174,4 +259,4 @@ class LstmModel(object):
         
         print('Test R2: %.3f' % r2)
         
-        return test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model, scaler
+        return test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model, feature_scaler, y_scaler
