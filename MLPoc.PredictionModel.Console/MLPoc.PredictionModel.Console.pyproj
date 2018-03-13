@@ -29,6 +29,9 @@
     <Compile Include="Database\MongoDbDatabase.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="FeatureConsumer.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="FeatureUtils.py">
       <SubType>Code</SubType>
     </Compile>
