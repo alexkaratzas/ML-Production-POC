@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 
+
 class MongoDbDatabase(object):
     def __init__(self, mongo_host, mongo_port, mongo_database_name):
         self.host = mongo_host
