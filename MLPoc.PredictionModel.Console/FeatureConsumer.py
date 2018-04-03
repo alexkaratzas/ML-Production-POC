@@ -4,16 +4,19 @@ import json
 
 
 class FeatureConsumer(object):
+    __max_buffer_size=100 * 1024 * 1024
+
     def __init__(self, topic, kafka_broker):
         self.kafka = KafkaClient(kafka_broker)
-        size_bytes = (100 * 1024 * 1024)
-        self.consumer = SimpleConsumer(self.kafka, None, topic, fetch_size_bytes=size_bytes, buffer_size=size_bytes,
-                                       max_buffer_size=size_bytes)
+        self.consumer = SimpleConsumer(self.kafka, None, topic, fetch_size_bytes=self.__max_buffer_size, buffer_size=self.__max_buffer_size,
+                                       max_buffer_size=self.__max_buffer_size)
 
-    def start(self):
+    def start(self, func):
         for msg in self.consumer:
-            print(msg)
             message = self.__deserialize_message(msg)
+            func(message)
 
-    def __deserialize_message(message):
+    def __deserialize_message(self, message):
         return json.loads(message.message.value.decode('utf-8'))
+
+

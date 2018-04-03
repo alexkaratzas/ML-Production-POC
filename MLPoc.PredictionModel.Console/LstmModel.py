@@ -17,6 +17,8 @@ class LstmModel(object):
         self.__train_perc = train_perc
         self.__log_verbose = log_verbose
         self.__batch_size = batch_size
+        self.__feature_scaler=MinMaxScaler(feature_range=(0, 1))
+        self.__y_scaler = MinMaxScaler(feature_range=(0, 1))
 
     def predict(self, data_point_df):
         log_verbose = self.__log_verbose
@@ -45,7 +47,6 @@ class LstmModel(object):
         # ensure all data is float
         values = values.astype('float32')
         # normalize features
-        self.__feature_scaler = self.__get_new_scaler()
         scaled = self.__feature_scaler.transform(values)
 
         # self.__y_scaler = __get_new_scaler()
@@ -97,21 +98,16 @@ class LstmModel(object):
     def train(self, df):
         df = self.__prepare_dataframe(df)
 
-        test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model, feature_scaler, y_scaler = self.__train_and_score_lstm_with_T0_data(
+        test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model= self.__train_and_score_lstm_with_T0_data(
             df, batch_size=self.__batch_size, log_verbose=self.__log_verbose)
 
         self.model = model
         self.r2 = r2
         self.rmse = rmse
-        self.__feature_scaler = feature_scaler
-        self.__y_scaler = y_scaler
         self.__last_data_points = df.loc[-(self.__past_window_size + 1):, :]
 
     def __prepare_dataframe(self, df):
         return df.loc[:, df.columns != 'DateTime']
-
-    def __get_new_scaler(self):
-        return MinMaxScaler(feature_range=(0, 1));
 
     def __train_and_score_lstm_with_T0_data(self, data_frame, batch_size, train_perc=0.7, look_ahead=0, epochs=50,
                                             optimizer='adam', pred_future=1, log_verbose=True, plot_charts=False):
@@ -140,10 +136,8 @@ class LstmModel(object):
         # ensure all data is float
         values = values.astype('float32')
         # normalize features
-        feature_scaler = MinMaxScaler(feature_range=(0, 1))
         scaled = self.__feature_scaler.fit_transform(values)
 
-        y_scaler = MinMaxScaler(feature_range=(0, 1))
         yscaled = self.__y_scaler.fit_transform(yvalues)
 
         if log_verbose == True:
@@ -256,4 +250,4 @@ class LstmModel(object):
 
         print('Test R2: %.3f' % r2)
 
-        return test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model, feature_scaler, y_scaler
+        return test_X, test_y, y_pred, inv_yhat, inv_y, r2, rmse, model

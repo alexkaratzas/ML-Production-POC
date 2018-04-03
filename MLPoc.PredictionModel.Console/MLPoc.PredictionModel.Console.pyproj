@@ -23,12 +23,7 @@
     <Compile Include="appsettings.json">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Database\DataPointMongoRepository.py">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="Database\MongoDbDatabase.py">
-      <SubType>Code</SubType>
-    </Compile>
+    <Compile Include="DataPointMongoRepository.py" />
     <Compile Include="FeatureConsumer.py">
       <SubType>Code</SubType>
     </Compile>
@@ -45,9 +40,10 @@
     <Compile Include="ml_libs.py">
       <SubType>Code</SubType>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Database\" />
+    <Compile Include="MongoDbDatabase.py" />
+    <Compile Include="PredictionService.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in

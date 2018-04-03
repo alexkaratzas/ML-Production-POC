@@ -6,6 +6,7 @@ from LstmModel import LstmModel
 import pandas as pd
 from FeatureUtils import convert_json_to_dataframe
 from FeatureConsumer import FeatureConsumer
+from PredictionService import PredictionService
 
 def main():
     print('Starting up Model Prediction Service...')
@@ -13,20 +14,14 @@ def main():
     
     consumer = FeatureConsumer('x1', config.kafka_broker)
     
-    consumer.start()
-
     db = MongoDbDatabase(config.mongodb_host, config.mongodb_port, config.mongodb_database);
     dataPointRepo = DataPointMongoRepository(db)
     
-    dataPoints = dataPointRepo.find()
+    model = LstmModel(log_verbose=True)
 
-    df = convert_json_to_dataframe(dataPoints)
+    svc = PredictionService(model, dataPointRepo, consumer, None)
 
-    print(df.count)
-
-    model = LstmModel()
-
-    model.train(df)
+    svc.start()
 
 
 
