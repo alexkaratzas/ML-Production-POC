@@ -1,6 +1,6 @@
-﻿using MLPoc.Bus.Messages;
+﻿using MLPoc.Common.Messages;
 
-namespace MLPoc.Bus
+namespace MLPoc.Common
 {
     public delegate void MessageReceivedEventHandler(object sender, Message msg);
 }

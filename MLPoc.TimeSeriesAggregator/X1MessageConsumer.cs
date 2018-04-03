@@ -1,6 +1,6 @@
 ﻿using MLPoc.Bus.Consumers;
-using MLPoc.Bus.Messages;
 using MLPoc.Common;
+using MLPoc.Common.Messages;
 
 namespace MLPoc.TimeSeriesAggregator
 {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MLPoc.Bus.Messages
+namespace MLPoc.Common.Messages
 {
     public abstract class TimeSeriesFeature
     {

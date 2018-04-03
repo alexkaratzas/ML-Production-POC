@@ -145,7 +145,7 @@ namespace MLPoc.Bus.Kafka
         {
             LogManager.Instance.Info($"Message received for Topic: {msg.Topic} Partition: {msg.Partition} Offset: {msg.Offset} {msg.Value}");
 
-            MessageReceived?.Invoke(this, new Messages.Message
+            MessageReceived?.Invoke(this, new Common.Messages.Message
             {
                 Topic = msg.Topic,
                 Payload = msg.Value

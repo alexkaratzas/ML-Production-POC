@@ -1,4 +1,5 @@
 ﻿using System;
+using MLPoc.Common;
 
 namespace MLPoc.Bus.Consumers
 {

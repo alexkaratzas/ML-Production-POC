@@ -1,4 +1,4 @@
-﻿namespace MLPoc.Bus.Messages
+﻿namespace MLPoc.Common.Messages
 {
     public class X1Message : TimeSeriesFeature
     {

@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
-using MLPoc.Bus.Messages;
 using MLPoc.Common;
+using MLPoc.Common.Messages;
 using MLPoc.Data.Common;
 
 namespace MLPoc.TimeSeriesAggregator

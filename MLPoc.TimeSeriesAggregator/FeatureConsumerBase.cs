@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using MLPoc.Bus.Consumers;
-using MLPoc.Bus.Messages;
+using MLPoc.Common.Messages;
 using Newtonsoft.Json;
 
 namespace MLPoc.TimeSeriesAggregator
