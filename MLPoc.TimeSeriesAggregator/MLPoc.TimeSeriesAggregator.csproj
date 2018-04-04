@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Akka" Version="1.3.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\MLPoc.Bus.Kafka\MLPoc.Bus.Kafka.csproj" />
     <ProjectReference Include="..\MLPoc.Common\MLPoc.Common.csproj" />
     <ProjectReference Include="..\MLPoc.Data.Common\MLPoc.Data.Common.csproj" />

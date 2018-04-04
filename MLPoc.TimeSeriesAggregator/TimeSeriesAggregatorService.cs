@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Threading.Tasks;
+using Akka.Actor;
 using MLPoc.Common;
 using MLPoc.Common.Messages;
 using MLPoc.Data.Common;
@@ -20,6 +21,8 @@ namespace MLPoc.TimeSeriesAggregator
 
         private readonly ConcurrentDictionary<DateTime, PartialDataPoint> _partialDataPoints;
         private readonly ConcurrentDictionary<DateTime, object> _lockObjects;
+
+        private readonly ActorSystem _actorSystem;
 
         public TimeSeriesAggregatorService(
             IFeatureNotifier<X1Message> x1Notifier, 
@@ -50,6 +53,8 @@ namespace MLPoc.TimeSeriesAggregator
             _x4Notifier.FeatureReceived += OnFeatureReceived;
             _x5Notifier.FeatureReceived += OnFeatureReceived;
             _yNotifier.FeatureReceived += OnFeatureReceived;
+
+            _actorSystem = ActorSystem.Create("TimeSeriesAggregator");
         }
 
         private void OnFeatureReceived(object sender, TimeSeriesFeature feature)
