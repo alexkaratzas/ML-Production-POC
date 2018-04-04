@@ -46,14 +46,14 @@ class PredictionService(object):
          return df
 
     def __split_features_targets(self, df):
-        target_column = 'y'
+        target_column = 'PriceDeviation'
         features = df.iloc[:, df.columns != target_column]
         target = df[[target_column]] 
         return features, target
 
     def __predict_auction_price(self, message):
         # assumption that database schema and message schema are identical in naming and field order
-        df = pd.DataFrame({'x1':[message['X1']], 'x2':[message['X2']], 'x3':[message['X3']], 'x4':[message['X4']], 'x5':[message['X5']]})
+        df = pd.DataFrame({'SpotPrice':[message['SpotPrice']], 'WindForecast':[message['WindForecast']], 'PvForecast':[message['PvForecast']]})
 
         df = self.__clean_data(df)
 

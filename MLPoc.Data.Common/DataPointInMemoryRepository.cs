@@ -34,7 +34,7 @@ namespace MLPoc.Data.Common
                 outfile.WriteLine("DateTime,x1,x2,x3,x4,x5,y");
                 foreach (var dataPoint in _dataPoints)
                 {
-                    outfile.WriteLine($"{dataPoint.DateTime:g},{dataPoint.X1},{dataPoint.X2},{dataPoint.X3},{dataPoint.X4},{dataPoint.X5},{dataPoint.Y}");
+                    outfile.WriteLine($"{dataPoint.DateTime:g},{dataPoint.SpotPrice},{dataPoint.WindForecast},{dataPoint.PvForecast},{dataPoint.PriceDeviation}");
                 }
             }
         }

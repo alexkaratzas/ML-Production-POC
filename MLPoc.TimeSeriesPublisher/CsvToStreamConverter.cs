@@ -3,32 +3,27 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MLPoc.Common.Messages;
 
 namespace MLPoc.TimeSeriesPublisher
 {
     public class CsvToStreamConverter
     {
-        private readonly IX1Publisher _x1Publisher;
-        private readonly IX2Publisher _x2Publisher;
-        private readonly IX3Publisher _x3Publisher;
-        private readonly IX4Publisher _x4Publisher;
-        private readonly IX5Publisher _x5Publisher;
-        private readonly IYPublisher _yPublisher;
+        private readonly IMessagePublisher<SpotPriceMessage> _spotPricePublisher;
+        private readonly IMessagePublisher<WindForecastMessage> _windForecastPublisher;
+        private readonly IMessagePublisher<PvForecastMessage> _pvForecastPublisher;
+        private readonly IMessagePublisher<PriceDeviationMessage> _priceDeviationPublisher;
 
         public CsvToStreamConverter(
-            IX1Publisher x1Publisher, 
-            IX2Publisher x2Publisher, 
-            IX3Publisher x3Publisher, 
-            IX4Publisher x4Publisher, 
-            IX5Publisher x5Publisher, 
-            IYPublisher yPublisher)
+            IMessagePublisher<SpotPriceMessage> spotPricePublisher, 
+            IMessagePublisher<WindForecastMessage> windForecastPublisher, 
+            IMessagePublisher<PvForecastMessage> pvForecastPublisher, 
+            IMessagePublisher<PriceDeviationMessage> priceDeviationPublisher)
         {
-            _x1Publisher = x1Publisher;
-            _x2Publisher = x2Publisher;
-            _x3Publisher = x3Publisher;
-            _x4Publisher = x4Publisher;
-            _x5Publisher = x5Publisher;
-            _yPublisher = yPublisher;
+            _spotPricePublisher = spotPricePublisher;
+            _windForecastPublisher = windForecastPublisher;
+            _pvForecastPublisher = pvForecastPublisher;
+            _priceDeviationPublisher = priceDeviationPublisher;
         }
 
         public async Task ConvertCsvToStream(string path, int? startIndex, int? endIndex, decimal percPublishWithY = 1)
@@ -48,22 +43,18 @@ namespace MLPoc.TimeSeriesPublisher
             foreach (var dataPoint in dataPoints)
             {
                 var date = DateTime.Parse(dataPoint[0]);
-                var x1 = TryParseNullableDecimal(dataPoint[1]);
-                var x2 = TryParseNullableDecimal(dataPoint[2]);
-                var x3 = TryParseNullableDecimal(dataPoint[3]);
-                var x4 = TryParseNullableDecimal(dataPoint[4]);
-                var x5 = TryParseNullableDecimal(dataPoint[5]);
-                var y = TryParseNullableDecimal(dataPoint[6]);
+                var spotPrice = TryParseNullableDecimal(dataPoint[2]);
+                var windForecast = TryParseNullableDecimal(dataPoint[3]);
+                var pvForecast = TryParseNullableDecimal(dataPoint[4]);
+                var priceDeviation = TryParseNullableDecimal(dataPoint[1]);
 
-                tasks.Add(_x1Publisher.Publish(date, x1));
-                tasks.Add(_x2Publisher.Publish(date, x2));
-                tasks.Add(_x3Publisher.Publish(date, x3));
-                tasks.Add(_x4Publisher.Publish(date, x4));
-                tasks.Add(_x5Publisher.Publish(date, x5));
+                tasks.Add(_spotPricePublisher.Publish(new SpotPriceMessage(date, spotPrice)));
+                tasks.Add(_windForecastPublisher.Publish(new WindForecastMessage(date, windForecast)));
+                tasks.Add(_pvForecastPublisher.Publish(new PvForecastMessage(date, pvForecast)));
 
                 if (count < publishYUntil)
                 {
-                    tasks.Add(_yPublisher.Publish(date, y));
+                    tasks.Add(_priceDeviationPublisher.Publish(new PriceDeviationMessage(date, priceDeviation)));
                 }
 
                 count++;

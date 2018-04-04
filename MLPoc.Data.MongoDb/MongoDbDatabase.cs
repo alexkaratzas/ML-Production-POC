@@ -17,12 +17,10 @@ namespace MLPoc.Data.MongoDb
             BsonClassMap.RegisterClassMap<DataPoint>(cm =>
             {
                 cm.MapMember(c => c.DateTime);
-                cm.MapMember(c => c.X1);
-                cm.MapMember(c => c.X2);
-                cm.MapMember(c => c.X3);
-                cm.MapMember(c => c.X4);
-                cm.MapMember(c => c.X5);
-                cm.MapMember(c => c.Y);
+                cm.MapMember(c => c.SpotPrice);
+                cm.MapMember(c => c.WindForecast);
+                cm.MapMember(c => c.PvForecast);
+                cm.MapMember(c => c.PriceDeviation);
             });
         }
 

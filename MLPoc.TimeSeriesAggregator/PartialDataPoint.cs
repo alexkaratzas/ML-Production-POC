@@ -8,12 +8,10 @@ namespace MLPoc.TimeSeriesAggregator
     {
         private readonly DataPoint _dataPoint;
 
-        private bool _x1Received;
-        private bool _x2Received;
-        private bool _x3Received;
-        private bool _x4Received;
-        private bool _x5Received;
-        private bool _yReceived;
+        private bool _spotPriceReceived;
+        private bool _windForecastReceived;
+        private bool _pvForecastReceived;
+        private bool _priceDeviationReceived;
 
         public PartialDataPoint(DateTime dateTime)
         {
@@ -23,48 +21,36 @@ namespace MLPoc.TimeSeriesAggregator
             };
         }
 
-        public bool ResultComplete => ReadyForPrediction && _yReceived;
+        public bool ResultComplete => ReadyForPrediction && _priceDeviationReceived;
 
         public bool ReadyForPrediction =>
-            _x1Received && _x2Received && _x3Received && _x4Received && _x5Received;
+            _spotPriceReceived && _windForecastReceived && _pvForecastReceived;
 
         public void FeatureReceived(TimeSeriesFeature message)
         {
-            if (message is X1Message msg1)
+            if (message is SpotPriceMessage spotPriceMessage)
             {
-                EnsureValidDate(msg1.DateTime);
-                _x1Received = true;
-                _dataPoint.X1 = msg1.X1;
+                EnsureValidDate(spotPriceMessage.DateTime);
+                _spotPriceReceived = true;
+                _dataPoint.SpotPrice = spotPriceMessage.SpotPrice;
             }
-            else if (message is X2Message msg2)
+            else if (message is WindForecastMessage windForecastMessage)
             {
-                EnsureValidDate(msg2.DateTime);
-                _x2Received = true;
-                _dataPoint.X2 = msg2.X2;
+                EnsureValidDate(windForecastMessage.DateTime);
+                _windForecastReceived = true;
+                _dataPoint.WindForecast = windForecastMessage.WindForecast;
             }
-            else if (message is X3Message msg3)
+            else if (message is PvForecastMessage pvForecastMessage)
             {
-                EnsureValidDate(msg3.DateTime);
-                _x3Received = true;
-                _dataPoint.X3 = msg3.X3;
+                EnsureValidDate(pvForecastMessage.DateTime);
+                _pvForecastReceived = true;
+                _dataPoint.PvForecast = pvForecastMessage.PvForecast;
             }
-            else if (message is X4Message msg4)
+            else if (message is PriceDeviationMessage priceDeviationMessage)
             {
-                EnsureValidDate(msg4.DateTime);
-                _x4Received = true;
-                _dataPoint.X4 = msg4.X4;
-            }
-            else if (message is X5Message msg5)
-            {
-                EnsureValidDate(msg5.DateTime);
-                _x5Received = true;
-                _dataPoint.X5 = msg5.X5;
-            }
-            else if (message is YMessage msgY)
-            {
-                EnsureValidDate(msgY.DateTime);
-                _yReceived = true;
-                _dataPoint.Y = msgY.Y;
+                EnsureValidDate(priceDeviationMessage.DateTime);
+                _priceDeviationReceived = true;
+                _dataPoint.PriceDeviation = priceDeviationMessage.PriceDeviation;
             }
 
             void EnsureValidDate(DateTime dateTime)

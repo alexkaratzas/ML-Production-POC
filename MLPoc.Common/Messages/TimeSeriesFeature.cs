@@ -4,6 +4,11 @@ namespace MLPoc.Common.Messages
 {
     public abstract class TimeSeriesFeature
     {
-        public DateTime DateTime { get; set; }
+        protected TimeSeriesFeature(DateTime dateTime)
+        {
+            DateTime = dateTime;
+        }
+
+        public DateTime DateTime { get; }
     }
 }
