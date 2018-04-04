@@ -16,6 +16,7 @@ namespace MLPoc.TimeSeriesAggregator
         private readonly IFeatureNotifier<X5Message> _x5Notifier;
         private readonly IFeatureNotifier<YMessage> _yNotifier;
         private readonly IDataPointRepository _dataPointRepository;
+        private readonly IDataPointPublisher _dataPointPublisher;
 
         private readonly ConcurrentDictionary<DateTime, PartialDataPoint> _partialDataPoints;
         private readonly ConcurrentDictionary<DateTime, object> _lockObjects;
@@ -27,7 +28,8 @@ namespace MLPoc.TimeSeriesAggregator
             IFeatureNotifier<X4Message> x4Notifier, 
             IFeatureNotifier<X5Message> x5Notifier, 
             IFeatureNotifier<YMessage> yNotifier, 
-            IDataPointRepository dataPointRepository)
+            IDataPointRepository dataPointRepository,
+            IDataPointPublisher dataPointPublisher)
         {
             LogManager.Instance.Info("Starting up Time Series Aggregator...");
 
@@ -38,6 +40,7 @@ namespace MLPoc.TimeSeriesAggregator
             _x5Notifier = x5Notifier;
             _yNotifier = yNotifier;
             _dataPointRepository = dataPointRepository;
+            _dataPointPublisher = dataPointPublisher;
             _partialDataPoints = new ConcurrentDictionary<DateTime, PartialDataPoint>();
             _lockObjects = new ConcurrentDictionary<DateTime, object>();
 
@@ -56,15 +59,20 @@ namespace MLPoc.TimeSeriesAggregator
                 var partialDataPoint = _partialDataPoints.GetOrAdd(feature.DateTime, new PartialDataPoint(feature.DateTime));
                 partialDataPoint.FeatureReceived(feature);
 
+                var dataPoint = partialDataPoint.GetDataPoint();
+
+                if (partialDataPoint.ReadyForPrediction)
+                {
+                    _dataPointPublisher.Publish(dataPoint);
+                }
+
                 if (!partialDataPoint.ResultComplete)
                 {
                     return;
                 }
 
-                var dataPoint = partialDataPoint.GetDataPoint();
-
                 _dataPointRepository.Add(dataPoint).Wait();
-
+                
                 _partialDataPoints.TryRemove(feature.DateTime, out _);
             }
         }

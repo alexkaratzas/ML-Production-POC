@@ -20,11 +20,14 @@ namespace MLPoc.TimeSeriesAggregator.Console
             var x5FeatureConsumer = new X5MessageConsumer(configurationProvider, consumerFactory);
             var yFeatureConsumer = new YMessageConsumer(configurationProvider, consumerFactory);
 
+            var kafkaPublisher = new KafkaMessagePublisher(configurationProvider.KafkaBroker);
+            var dataPointsPublisher = new DataPointPublisher(kafkaPublisher, configurationProvider.DataPointTopicName);
+
             var database = new MongoDbDatabase(configurationProvider.MongoDbHost, configurationProvider.MongoDbPort, configurationProvider.MongoDbDatabaseName);
             var repository = new DataPointRepository(database);
 
             RunLongRunning(new TimeSeriesAggregatorService(x1FeatureConsumer, x2FeatureConsumer, x3FeatureConsumer,
-                x4FeatureConsumer, x5FeatureConsumer, yFeatureConsumer, repository));
+                x4FeatureConsumer, x5FeatureConsumer, yFeatureConsumer, repository, dataPointsPublisher));
         }
     }
 }

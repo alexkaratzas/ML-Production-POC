@@ -35,6 +35,7 @@ namespace MLPoc.Common
         public string X3TopicName => _configurationRoot["X3TopicName"];
         public string X4TopicName => _configurationRoot["X4TopicName"];
         public string X5TopicName => _configurationRoot["X5TopicName"];
+        public string DataPointTopicName => _configurationRoot["DataPointTopicName"];
         public string YTopicName => _configurationRoot ["YTopicName"];
         public string ConsumerGroup => _configurationRoot["ConsumerGroup"];
         public string MongoDbHost=> _configurationRoot.GetSection("MongoDbSettings")["Host"];

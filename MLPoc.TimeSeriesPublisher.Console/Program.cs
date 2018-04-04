@@ -19,7 +19,7 @@ namespace MLPoc.TimeSeriesPublisher.Console
 
             using (var service = new TimeSeriesPublisherService(configurationProvider))
             {
-                await service.Run(csvFileName, startIndex, endIndex);
+                await service.Run(csvFileName, startIndex, endIndex, 0.9m);
             }
 
             return 0;

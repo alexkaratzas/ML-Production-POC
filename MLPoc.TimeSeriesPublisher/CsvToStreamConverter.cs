@@ -31,7 +31,7 @@ namespace MLPoc.TimeSeriesPublisher
             _yPublisher = yPublisher;
         }
 
-        public async Task ConvertCsvToStream(string path, int? startIndex, int? endIndex)
+        public async Task ConvertCsvToStream(string path, int? startIndex, int? endIndex, decimal percPublishWithY = 1)
         {
             var content = ReadFileContent(path).ToList();
 
@@ -40,7 +40,12 @@ namespace MLPoc.TimeSeriesPublisher
 
             var tasks = new List<Task>();
 
-            foreach (var dataPoint in content.GetRange(1 + startIndex.Value, endIndex.Value))
+            var dataPoints = content.GetRange(1 + startIndex.Value, endIndex.Value);
+
+            var publishYUntil = dataPoints.Count * percPublishWithY;
+
+            var count = 0;
+            foreach (var dataPoint in dataPoints)
             {
                 var date = DateTime.Parse(dataPoint[0]);
                 var x1 = TryParseNullableDecimal(dataPoint[1]);
@@ -55,7 +60,13 @@ namespace MLPoc.TimeSeriesPublisher
                 tasks.Add(_x3Publisher.Publish(date, x3));
                 tasks.Add(_x4Publisher.Publish(date, x4));
                 tasks.Add(_x5Publisher.Publish(date, x5));
-                tasks.Add(_yPublisher.Publish(date, y));
+
+                if (count < publishYUntil)
+                {
+                    tasks.Add(_yPublisher.Publish(date, y));
+                }
+
+                count++;
             }
 
             await Task.WhenAll(tasks);

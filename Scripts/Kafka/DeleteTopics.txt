@@ -4,3 +4,5 @@
 .\kafka-topics.bat --zookeeper localhost:2181 --delete --topic x4
 .\kafka-topics.bat --zookeeper localhost:2181 --delete --topic x5
 .\kafka-topics.bat --zookeeper localhost:2181 --delete --topic y
+.\kafka-topics.bat --zookeeper localhost:2181 --delete --topic DataPoints
+.\kafka-topics.bat --zookeeper localhost:2181 --delete --topic Predictions

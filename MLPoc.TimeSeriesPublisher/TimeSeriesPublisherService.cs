@@ -17,7 +17,7 @@ namespace MLPoc.TimeSeriesPublisher
             _messagePublisher = new KafkaMessagePublisher(_configurationProvider.KafkaBroker);
         }
 
-        public async Task Run(string csvFileName, int? startIndex, int? endIndex)
+        public async Task Run(string csvFileName, int? startIndex, int? endIndex, decimal percPublishWithY = 1)
         {
             LogManager.Instance.Info("Starting up Time Series Publisher...");
 
@@ -31,7 +31,7 @@ namespace MLPoc.TimeSeriesPublisher
             var converter = new CsvToStreamConverter(x1Publisher, x2Publisher, x3Publisher, x4Publisher, x5Publisher,
                 yPublisher);
 
-            await converter.ConvertCsvToStream(csvFileName, startIndex, endIndex);
+            await converter.ConvertCsvToStream(csvFileName, startIndex, endIndex, percPublishWithY);
         }
 
         public void Dispose()

@@ -30,7 +30,7 @@
     <Compile Include="FeatureUtils.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="KafkaProducer.py">
+    <Compile Include="KafkaPublisher.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="LstmModel.py">
@@ -41,6 +41,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="MongoDbDatabase.py" />
+    <Compile Include="PredictionPublisher.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="PredictionService.py">
       <SubType>Code</SubType>
     </Compile>

@@ -23,7 +23,10 @@ namespace MLPoc.TimeSeriesAggregator
             };
         }
 
-        public bool ResultComplete => _x1Received && _x2Received && _x3Received && _x4Received && _x5Received && _yReceived;
+        public bool ResultComplete => ReadyForPrediction && _yReceived;
+
+        public bool ReadyForPrediction =>
+            _x1Received && _x2Received && _x3Received && _x4Received && _x5Received;
 
         public void FeatureReceived(TimeSeriesFeature message)
         {
