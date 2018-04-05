@@ -45,19 +45,23 @@ namespace MLPoc.TimeSeriesAggregator
 
                 _actorSystem = ActorSystem.Create("TimeSeriesAggregator");
 
-                var featurePublisherActor = _actorSystem.ActorOf(Props.Create(() => new FeaturePublisherActor(_dataPointPublisher)));
+                var featurePublisherActor = _actorSystem.ActorOf(Props.Create(() => new FeaturePublisherActor(_dataPointPublisher)), "FeaturePublisherActor");
                 var trainingDataPersisterActor =
-                    _actorSystem.ActorOf(Props.Create(() => new TrainingDataPersisterActor(_dataPointRepository)));
+                    _actorSystem.ActorOf(Props.Create(() => new TrainingDataPersisterActor(_dataPointRepository)), "TrainingDataPersisterActor");
                 var featureAggregatorActor = _actorSystem.ActorOf(Props.Create(() =>
                     new FeatureAggregatorActor(featurePublisherActor, trainingDataPersisterActor)));
                 var spotPriceActor =
-                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<SpotPriceMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.SpotPriceTopicName, _configurationProvider.ConsumerGroup)));
+                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<SpotPriceMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.SpotPriceTopicName, _configurationProvider.ConsumerGroup)), 
+                        "SpotPriceActor");
                 var windForecastActor =
-                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<WindForecastMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.WindForecastTopicName, _configurationProvider.ConsumerGroup)));
+                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<WindForecastMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.WindForecastTopicName, _configurationProvider.ConsumerGroup)),
+                        "WindForecastActor");
                 var pvForecastActor =
-                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<PvForecastMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.PvForecastTopicName, _configurationProvider.ConsumerGroup)));
+                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<PvForecastMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.PvForecastTopicName, _configurationProvider.ConsumerGroup)),
+                        "PvForecastActor");
                 var priceDeviationActor =
-                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<PriceDeviationMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.PriceDeviationTopicName, _configurationProvider.ConsumerGroup)));
+                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<PriceDeviationMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.PriceDeviationTopicName, _configurationProvider.ConsumerGroup)),
+                        "PriceDeviationActor");
 
                 spotPriceActor.Tell(ActorMessage.Start);
                 windForecastActor.Tell(ActorMessage.Start);
@@ -69,13 +73,16 @@ namespace MLPoc.TimeSeriesAggregator
                     Thread.Sleep(1000);
                 }
 
-                spotPriceActor.GracefulStop(TimeSpan.FromSeconds(2));
-                priceDeviationActor.GracefulStop(TimeSpan.FromSeconds(2));
-                pvForecastActor.GracefulStop(TimeSpan.FromSeconds(2));
-                windForecastActor.GracefulStop(TimeSpan.FromSeconds(2));
-                featureAggregatorActor.GracefulStop(TimeSpan.FromSeconds(2));
-                trainingDataPersisterActor.GracefulStop(TimeSpan.FromSeconds(2));
-                featurePublisherActor.GracefulStop(TimeSpan.FromSeconds(2));
+                var stopTimeout = TimeSpan.FromSeconds(10);
+
+                Task.WaitAll(
+                    spotPriceActor.GracefulStop(stopTimeout),
+                    priceDeviationActor.GracefulStop(stopTimeout),
+                    pvForecastActor.GracefulStop(stopTimeout),
+                    windForecastActor.GracefulStop(stopTimeout),
+                    featureAggregatorActor.GracefulStop(stopTimeout),
+                    trainingDataPersisterActor.GracefulStop(stopTimeout),
+                    featurePublisherActor.GracefulStop(stopTimeout));
 
             }, cancellationToken);
         }

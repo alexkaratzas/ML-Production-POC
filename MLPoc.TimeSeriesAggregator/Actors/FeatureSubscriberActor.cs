@@ -38,14 +38,16 @@ namespace MLPoc.TimeSeriesAggregator.Actors
 
                 _consumer.Start();
             }
-            else if(_isStarted)
-            {
-                //TODO: investigate shutdown patterns
-                _consumer.MessageReceived -= ConsumerOnMessageReceived;
-                _consumer.Dispose();
+        }
 
-                _isStarted = false;
-            }
+        protected override void PostStop()
+        {
+            _consumer.MessageReceived -= ConsumerOnMessageReceived;
+            _consumer.Dispose();
+
+            _isStarted = false;
+
+            base.PostStop();
         }
 
         private void ConsumerOnMessageReceived(object sender, Message msg)

@@ -51,8 +51,8 @@ namespace MLPoc.TimeSeriesAggregator.Actors
             }
             else
             {
-                //TODO: dead letter queue?
                 LogManager.Instance.Error($"Invalid message received {message.GetType()} {message}");
+                Unhandled(message);
             }
                 
         }
