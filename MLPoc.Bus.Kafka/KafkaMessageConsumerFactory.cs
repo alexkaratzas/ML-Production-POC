@@ -15,11 +15,7 @@ namespace MLPoc.Bus.Kafka
 
         public IMessageConsumer Create(IEnumerable<string> topics, string consumerGroup)
         {
-            var consumer = new KafkaMessageConsumer(_configurationProvider.KafkaBroker, topics, consumerGroup);
-
-            consumer.Start();
-
-            return consumer;
+            return new KafkaMessageConsumer(_configurationProvider.KafkaBroker, topics, consumerGroup);
         }
     }
 }

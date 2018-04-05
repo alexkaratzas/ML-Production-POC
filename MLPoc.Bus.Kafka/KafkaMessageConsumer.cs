@@ -44,7 +44,6 @@ namespace MLPoc.Bus.Kafka
             _consumer.OnPartitionsRevoked += OnConsumerOnOnPartitionsRevoked;
 
             _consumer.OnStatistics += OnConsumerOnOnStatistics;
-
         }
 
         private Task _mainTask;

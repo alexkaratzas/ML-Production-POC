@@ -1,40 +1,38 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using Akka.Actor;
+using MLPoc.Bus.Consumers;
 using MLPoc.Common;
+using MLPoc.Common.Messages;
+using MLPoc.Data.Common;
 using MLPoc.TimeSeriesAggregator.Actors;
+using MLPoc.TimeSeriesAggregator.Messages;
 
 namespace MLPoc.TimeSeriesAggregator
 {
     public class TimeSeriesAggregatorService : IService
     {
         private ActorSystem _actorSystem;
-        
-        //private void OnFeatureReceived(object sender, TimeSeriesFeature feature)
-        //{
-        //    lock (_lockObjects.GetOrAdd(feature.DateTime, new object()))
-        //    {
-        //        var partialDataPoint = _partialDataPoints.GetOrAdd(feature.DateTime, new PartialDataPoint(feature.DateTime));
-        //        partialDataPoint.FeatureReceived(feature);
 
-        //        var dataPoint = partialDataPoint.GetDataPoint();
+        private readonly IDataPointRepository _dataPointRepository;
+        private readonly IDataPointPublisher _dataPointPublisher;
+        private readonly IMessageConsumerFactory _consumerFactory;
+        private readonly IConfigurationProvider _configurationProvider;
 
-        //        if (partialDataPoint.ReadyForPrediction)
-        //        {
-        //            _dataPointPublisher.Publish(dataPoint);
-        //        }
 
-        //        if (!partialDataPoint.ReadyToSave)
-        //        {
-        //            return;
-        //        }
-
-        //        _dataPointRepository.Add(dataPoint).Wait();
-                
-        //        _partialDataPoints.TryRemove(feature.DateTime, out _);
-        //    }
-        //}
-
+        public TimeSeriesAggregatorService(
+            IDataPointRepository dataPointRepository,
+            IDataPointPublisher dataPointPublisher,
+            IMessageConsumerFactory consumerFactory,
+            IConfigurationProvider configurationProvider)
+        {
+            _dataPointRepository = dataPointRepository;
+            _dataPointPublisher = dataPointPublisher;
+            _consumerFactory = consumerFactory;
+            _configurationProvider = configurationProvider;
+        }
+      
         public void Dispose()
         {
         }
@@ -43,31 +41,42 @@ namespace MLPoc.TimeSeriesAggregator
         {
             return Task.Run(() =>
             {
+                LogManager.Instance.Info("Starting up Time Series Aggregator...");
+
                 _actorSystem = ActorSystem.Create("TimeSeriesAggregator");
 
-                var featurePublisherActor = _actorSystem.ActorOf(Props.Create(() => new FeaturePublisherActor()));
+                var featurePublisherActor = _actorSystem.ActorOf(Props.Create(() => new FeaturePublisherActor(_dataPointPublisher)));
                 var trainingDataPersisterActor =
-                    _actorSystem.ActorOf(Props.Create(() => new TrainingDataPersisterActor()));
+                    _actorSystem.ActorOf(Props.Create(() => new TrainingDataPersisterActor(_dataPointRepository)));
                 var featureAggregatorActor = _actorSystem.ActorOf(Props.Create(() =>
                     new FeatureAggregatorActor(featurePublisherActor, trainingDataPersisterActor)));
                 var spotPriceActor =
-                    _actorSystem.ActorOf(Props.Create(() => new SpotPriceSubscriberActor(featureAggregatorActor)));
+                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<SpotPriceMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.SpotPriceTopicName, _configurationProvider.ConsumerGroup)));
                 var windForecastActor =
-                    _actorSystem.ActorOf(Props.Create(() => new WindForecastSubscriberActor(featureAggregatorActor)));
+                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<WindForecastMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.WindForecastTopicName, _configurationProvider.ConsumerGroup)));
                 var pvForecastActor =
-                    _actorSystem.ActorOf(Props.Create(() => new PvForecastSubscriberActor(featureAggregatorActor)));
+                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<PvForecastMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.PvForecastTopicName, _configurationProvider.ConsumerGroup)));
                 var priceDeviationActor =
-                    _actorSystem.ActorOf(Props.Create(() => new PriceDeviationSubscriberActor(featureAggregatorActor)));
+                    _actorSystem.ActorOf(Props.Create(() => new FeatureSubscriberActor<PriceDeviationMessage>(featureAggregatorActor, _consumerFactory, _configurationProvider.PriceDeviationTopicName, _configurationProvider.ConsumerGroup)));
 
-                spotPriceActor.Tell("start");
-                windForecastActor.Tell("start");
-                pvForecastActor.Tell("start");
-                priceDeviationActor.Tell("start");
+                spotPriceActor.Tell(ActorMessage.Start);
+                windForecastActor.Tell(ActorMessage.Start);
+                pvForecastActor.Tell(ActorMessage.Start);
+                priceDeviationActor.Tell(ActorMessage.Start);
 
                 while (!cancellationToken.IsCancellationRequested)
                 {
                     Thread.Sleep(1000);
                 }
+
+                spotPriceActor.GracefulStop(TimeSpan.FromSeconds(2));
+                priceDeviationActor.GracefulStop(TimeSpan.FromSeconds(2));
+                pvForecastActor.GracefulStop(TimeSpan.FromSeconds(2));
+                windForecastActor.GracefulStop(TimeSpan.FromSeconds(2));
+                featureAggregatorActor.GracefulStop(TimeSpan.FromSeconds(2));
+                trainingDataPersisterActor.GracefulStop(TimeSpan.FromSeconds(2));
+                featurePublisherActor.GracefulStop(TimeSpan.FromSeconds(2));
+
             }, cancellationToken);
         }
     }
