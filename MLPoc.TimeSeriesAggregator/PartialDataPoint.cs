@@ -21,7 +21,7 @@ namespace MLPoc.TimeSeriesAggregator
             };
         }
 
-        public bool ResultComplete => ReadyForPrediction && _priceDeviationReceived;
+        public bool ReadyToSave => ReadyForPrediction && _priceDeviationReceived;
 
         public bool ReadyForPrediction =>
             _spotPriceReceived && _windForecastReceived && _pvForecastReceived;

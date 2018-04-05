@@ -20,9 +20,19 @@ namespace MLPoc.Common
 
             using (service)
             {
-                service.Run();
+                var cts = new CancellationTokenSource();
+
+                service.Run(cts.Token);
 
                 QuitEvent.WaitOne();
+
+                LogManager.Instance.Info("Exit event received. Aborting process...");
+
+                cts.Cancel();
+
+                LogManager.Instance.Info("Waiting for system to shurdown gracefully...");
+
+                Thread.Sleep(2000);
             }
         }
     }

@@ -2,11 +2,8 @@
 
 namespace MLPoc.TimeSeriesAggregator.Actors
 {
-    public class FeatureSubscriberActor : UntypedActor
+    public class FeaturePublisherActor : UntypedActor
     {
-        //public FeatureSubscriberActor(IActorRef featureAggregatorActor)
-        //{
-        //}
 
         protected override void OnReceive(object message)
         {

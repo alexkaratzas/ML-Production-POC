@@ -4,7 +4,7 @@ using MLPoc.Common.Messages;
 
 namespace MLPoc.TimeSeriesAggregator
 {
-    public class SpotPriceMessageConsumer : FeatureConsumerBase<Common.Messages.SpotPriceMessage>
+    public class SpotPriceMessageConsumer : FeatureConsumerBase<SpotPriceMessage>
     {
         public SpotPriceMessageConsumer(IConfigurationProvider configurationProvider, IMessageConsumerFactory consumerFactory)
             : base(new[] { configurationProvider.SpotPriceTopicName}, configurationProvider.ConsumerGroup, consumerFactory)
